@@ -1,0 +1,53 @@
+server:
+  port: 8082
+
+spring:
+
+  datasource:
+    url: 
+    username: 
+    password: 
+
+  jpa:
+    hibernate:
+      ddl-auto: validate
+
+    open-in-view: false
+
+    properties:
+      hibernate:
+        default_schema: collection
+
+  liquibase:
+    enabled: true
+    change-log: classpath:db/changelog/db.changelog-master.yaml
+    default-schema: 
+    liquibase-schema: 
+
+  security:
+    oauth2:
+      resourceserver:
+        jwt:
+          issuer-uri: 
+
+services:
+  profile:
+    base-url:
+
+aws:
+
+  cognito:
+
+    region: 
+
+    user-pool-id: 
+
+    client-id: 
+
+    domain: 
+
+    issuer-uri: 
+
+    openid-configuration-uri: 
+
+    jwks-uri: 
