@@ -331,9 +331,7 @@ public class MergeRequestController {
 
     @GetMapping("/decisions/mine")
     public ResponseEntity<List<MergeRequestDecisionResponseDTO>>
-    getCurrentProfilesDecisions(
-            @AuthenticationPrincipal Jwt jwt
-    ) {
+    getCurrentProfilesDecisions(@AuthenticationPrincipal Jwt jwt) {
         UUID profileId =
                 getCurrentProfileId(jwt);
 

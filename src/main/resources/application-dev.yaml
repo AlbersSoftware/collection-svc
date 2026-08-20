@@ -1,5 +1,5 @@
 server:
-  port: 8082
+  port: 
 
 spring:
 
@@ -16,7 +16,7 @@ spring:
 
     properties:
       hibernate:
-        default_schema: collection
+        default_schema: 
 
   liquibase:
     enabled: true
@@ -38,13 +38,13 @@ aws:
 
   cognito:
 
-    region: 
+    region: us-east-1
 
     user-pool-id: 
 
     client-id: 
 
-    domain: 
+    domain:
 
     issuer-uri: 
 
