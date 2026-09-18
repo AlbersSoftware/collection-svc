@@ -317,6 +317,39 @@ public class CollectionController {
         );
     }
 
+
+    @GetMapping("/relationships/incoming")
+    public ResponseEntity<List<CollectionRelationshipResponseDTO>>
+    getIncomingRelationships(
+        @AuthenticationPrincipal Jwt jwt
+      ) {
+    UUID profileId =
+            getCurrentProfileId(jwt);
+
+    return ResponseEntity.ok(
+            collectionRelationshipService
+                    .getPendingRelationshipsByProfileId(
+                            profileId
+                    )
+    );
+}
+
+    @GetMapping("/relationships/outgoing")
+    public ResponseEntity<List<CollectionRelationshipResponseDTO>>
+    getOutgoingRelationships(
+        @AuthenticationPrincipal Jwt jwt
+    ) {
+    UUID profileId =
+            getCurrentProfileId(jwt);
+
+    return ResponseEntity.ok(
+            collectionRelationshipService
+                    .getRelationshipsInvitedByProfileId(
+                            profileId
+                    )
+    );
+}
+
     /*
      * -------------------------------------------------------------------------
      * Accept relationship invitation

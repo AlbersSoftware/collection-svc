@@ -206,5 +206,26 @@ public interface CollectionRelationshipRepository
 List<ProposedRelationshipProjection> findProposedRelationshipsByCollectionIds(
         @Param("collectionIds") List<UUID> collectionIds
 );
+
+    @Query(value = """
+    SELECT *
+    FROM collection.collection_relationships
+    WHERE profile_id = :profileId
+      AND status = 'PENDING'
+    ORDER BY created_at DESC
+    """, nativeQuery = true)
+List<CollectionRelationship> findPendingRelationshipsByProfileId(
+        @Param("profileId") UUID profileId
+);
+
+@Query(value = """
+    SELECT *
+    FROM collection.collection_relationships
+    WHERE invited_by_profile_id = :profileId
+    ORDER BY created_at DESC
+    """, nativeQuery = true)
+List<CollectionRelationship> findRelationshipsInvitedByProfileId(
+        @Param("profileId") UUID profileId
+);
     // findProposedRelationshipsByCollectionIds reserved for MergeRequestService
 }

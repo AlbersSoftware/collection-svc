@@ -53,7 +53,10 @@ public interface CollectionRelationshipService {
     CollectionRelationshipResponseDTO updateRelationshipRole(UUID relationshipId, UUID profileId, CollectionRelationshipRole role);
 
     CollectionRelationshipResponseDTO createMergeRelationships(UUID collectionId, CollectionRelationshipRequestDTO request, UUID invitedByProfileId);
+    
+    List<CollectionRelationshipResponseDTO> getPendingRelationshipsByProfileId(UUID profileId);
 
+    List<CollectionRelationshipResponseDTO> getRelationshipsInvitedByProfileId(UUID profileId);
 
 
     /*

@@ -35,18 +35,28 @@ public class CollectionRelationshipServiceImpl implements CollectionRelationship
         return mapToResponse(collectionRelationshipRepository.save(relationship));
     }
 
-    @Override
-    public CollectionRelationshipResponseDTO createRelationship(UUID collectionId, CollectionRelationshipRequestDTO request, UUID invitedByProfileId) {
-        CollectionRelationship relationship = CollectionRelationship.builder()
-                .collectionId(collectionId)
-                .profileId(request.profileId())
-                .role(request.role())
-                .status(CollectionRelationshipStatus.PENDING)
-                .invitedByProfileId(invitedByProfileId)
-                .build();
+      @Override
+      public CollectionRelationshipResponseDTO createRelationship(UUID collectionId,CollectionRelationshipRequestDTO request,UUID invitedByProfileId) {
+            collectionRelationshipRepository.findRelationshipByCollectionIdAndProfileId(collectionId,request.profileId())
+            .ifPresent(existing -> {
+                throw new IllegalStateException(
+                        "A relationship already exists for this profile and collection."
+                );
+            });
 
-        return mapToResponse(collectionRelationshipRepository.save(relationship));
-    }
+    CollectionRelationship relationship =
+            CollectionRelationship.builder()
+                    .collectionId(collectionId)
+                    .profileId(request.profileId())
+                    .role(request.role())
+                    .status(CollectionRelationshipStatus.PENDING)
+                    .invitedByProfileId(invitedByProfileId)
+                    .build();
+
+    return mapToResponse(
+            collectionRelationshipRepository.save(relationship)
+    );
+}
 
 
 @Override
@@ -208,6 +218,31 @@ public CollectionRelationshipResponseDTO createMergeRelationships(
                 .map(this::mapToResponse)
                 .toList();
     }
+
+
+@Override
+@Transactional(readOnly = true)
+public List<CollectionRelationshipResponseDTO> getPendingRelationshipsByProfileId(UUID profileId) {
+    return collectionRelationshipRepository
+            .findPendingRelationshipsByProfileId(
+                    profileId
+            )
+            .stream()
+            .map(this::mapToResponse)
+            .toList();
+}
+
+@Override
+@Transactional(readOnly = true)
+public List<CollectionRelationshipResponseDTO> getRelationshipsInvitedByProfileId(UUID profileId) {
+    return collectionRelationshipRepository
+            .findRelationshipsInvitedByProfileId(
+                    profileId
+            )
+            .stream()
+            .map(this::mapToResponse)
+            .toList();
+}
 // status methods based on rules
     @Override
     public CollectionRelationshipResponseDTO acceptRelationship(UUID relationshipId, UUID profileId) {
